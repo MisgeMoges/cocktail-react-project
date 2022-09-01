@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
-import data from './data';
-import SingleQuestion from './Question';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import pages
+import Home from './pages/Home';
+import About from './pages/About';
+import SingleCocktail from './pages/SingleCocktail';
+import Error from './pages/Error';
+// import components
+import Navbar from './components/Navbar';
 function App() {
-
-  const [questions, setQuestions] = useState(data);
   return (
-    <main>
-      <div className="container">
-        <h3>questions and answers about login</h3>
-        <section className="info">
-          {questions.map((question) => {
-            return <SingleQuestion key={question.id} {...question} />;
-          })}
-        </section>
-      </div>
-    </main>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='about' element={<About />} />
+        <Route path='cocktail/:id' element={<SingleCocktail />} />
+        <Route path='*' element={<Error />} />
+      </Routes>
+    </Router>
   );
 }
 
