@@ -1,24 +1,42 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import pages
-import Home from './pages/Home';
-import About from './pages/About';
-import SingleCocktail from './pages/SingleCocktail';
-import Error from './pages/Error';
-// import components
-import Navbar from './components/Navbar';
+import React, { useState, useEffect } from 'react'
+import Loading from './Loading'
+import Tours from './Tours'
+import {data} from './data'
+
 function App() {
+  const [loading, setLoading] = useState(true)
+  const [tours, setTours] = useState(data)
+
+  const removeTour = (id) => {
+    const newTours = tours.filter((tour) => tour.id !== id)
+    setTours(newTours)
+  }
+
+ 
+  if (loading) {
+    return (
+      <main>
+        <Loading />
+      </main>
+    )
+  }
+  if (tours.length === 0) {
+    return (
+      <main>
+        <div className='title'>
+          <h2>no tours left</h2>
+          <button className='btn' onClick={() => setTours([])}>
+            refresh
+          </button>
+        </div>
+      </main>
+    )
+  }
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='about' element={<About />} />
-        <Route path='cocktail/:id' element={<SingleCocktail />} />
-        <Route path='*' element={<Error />} />
-      </Routes>
-    </Router>
-  );
+    <main>
+      <Tours tours={tours} removeTour={removeTour} />
+    </main>
+  )
 }
 
-export default App;
+export default App
